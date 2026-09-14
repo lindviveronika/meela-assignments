@@ -77,9 +77,18 @@ struct OnboardingSubmissionSummary {
 async fn get_onboarding_submissions(
     Data(pool): Data<&SqlitePool>,
 ) -> Result<Json<Vec<OnboardingSubmissionSummary>>, Error> {
-    let rows = sqlx::query!(r#"SELECT id as "id!", status as "status: OnboardingSubmissionStatus", created_at as "created_at!" FROM onboarding_submissions"#)
-        .fetch_all(pool)
-        .await?;
+    let rows = sqlx::query!(
+        r#"
+        SELECT
+            id as "id!",
+            status as "status: OnboardingSubmissionStatus",
+            created_at as "created_at!"
+        FROM onboarding_submissions
+        ORDER BY created_at DESC
+        "#
+    )
+    .fetch_all(pool)
+    .await?;
 
     let summaries = rows
         .into_iter()
