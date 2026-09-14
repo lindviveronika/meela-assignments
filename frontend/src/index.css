@@ -1,0 +1,37 @@
+:root {
+  --text: black;
+  --bg: #fff;
+
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+
+  font: 16px/145% var(--sans);
+
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #fff;
+    --bg: black;
+  }
+}
+
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
