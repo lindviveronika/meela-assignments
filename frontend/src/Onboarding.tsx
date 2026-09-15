@@ -1,10 +1,11 @@
 import { useParams } from "react-router";
 import { ONBOARDING_SUBMISSIONS_API } from "./constants";
 import { useFetchData } from "./hooks/useFetchData";
+import type { SubmissionDetails } from "./types";
 
 function Onboarding() {
   const { id } = useParams();
-  const { data, isLoading, error } = useFetchData(
+  const { data, isLoading, error } = useFetchData<SubmissionDetails>(
     `${ONBOARDING_SUBMISSIONS_API}/${id}`,
   );
 

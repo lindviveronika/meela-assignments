@@ -1,44 +1,52 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ONBOARDING_SUBMISSIONS_API } from "./constants";
 import styles from "./Home.module.css";
 import { useFetchData } from "./hooks/useFetchData";
-import { fetchData } from "./utils/fetchData";
-
-interface SubmissionSummary {
-  id: string;
-  status: "draft" | "submitted";
-  createdAt: string;
-}
+import { useSendData } from "./hooks/useSendData";
+import type {
+  CreateOnboardingSubmissionResponse,
+  SubmissionSummary,
+} from "./types";
 
 function Home() {
+  const navigate = useNavigate();
+
   const {
     data: submissions,
-    error,
+    error: loadSubmissionsError,
     isLoading,
   } = useFetchData<SubmissionSummary[]>(ONBOARDING_SUBMISSIONS_API);
 
+  const {
+    sendData,
+    error: createSubmissionError,
+    isLoading: isCreatingSubmission,
+  } = useSendData<CreateOnboardingSubmissionResponse>(
+    ONBOARDING_SUBMISSIONS_API,
+  );
+
   async function handleCreateOnboardingSubmission() {
-    await fetchData(ONBOARDING_SUBMISSIONS_API, {
+    const result = await sendData({
       method: "POST",
     });
+
+    if (result.error) {
+      return;
+    }
+
+    navigate(`/onboarding/${result.data.id}`);
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  function renderSubmissionList() {
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+    if (loadSubmissionsError) {
+      return <div>Error: {loadSubmissionsError.message}</div>;
+    }
 
-  return (
-    <div className={styles.container}>
-      <button
-        className={styles.button}
-        onClick={handleCreateOnboardingSubmission}
-      >
-        Create new onboarding submission
-      </button>
+    return (
       <ul className={styles.submissionContainer}>
         {submissions?.map((submission) => (
           <li className={styles.submission} key={submission.id}>
@@ -52,6 +60,22 @@ function Home() {
           </li>
         ))}
       </ul>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <button
+        className={styles.button}
+        onClick={handleCreateOnboardingSubmission}
+        disabled={isCreatingSubmission}
+      >
+        Create new onboarding submission
+      </button>
+      {createSubmissionError && (
+        <div>Error: {createSubmissionError.message}</div>
+      )}
+      {renderSubmissionList()}
     </div>
   );
 }
