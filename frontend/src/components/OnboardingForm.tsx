@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { ONBOARDING_SUBMISSIONS_API } from "../constants";
 import { useSendData } from "../hooks/useSendData";
 import {
@@ -7,7 +7,8 @@ import {
   type OnboardingAnswers,
   type SubmissionDetails,
 } from "../types";
-import styles from "./Onboarding.module.css";
+import { Button } from "./Button";
+import styles from "./OnboardingForm.module.css";
 import {
   firstOnboardingStepId,
   getOnboardingStepById,
@@ -63,22 +64,39 @@ function OnboardingForm({ data }: { data: SubmissionDetails }) {
     value: OnboardingAnswers[K],
   ) => setOnboardingAnswers((prev) => ({ ...prev, [key]: value }));
 
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+    // TODO: Implement form submission logic
+    event.preventDefault();
+    console.log("submit form");
+  };
+
   const OnboardingStep = onboardingStep.element;
 
   return (
-    <div className={styles.container}>
-      <Link to="/">Home</Link>
-      <button onClick={handleSaveProgress}>Save and continue later</button>
-      <OnboardingStep answers={onboardingAnswers} setAnswer={handleUpdate} />
-      <div>
-        <button onClick={handlePreviousClick} disabled={isFirstQuestion}>
-          Back
-        </button>
-        <button onClick={handleNextClick} disabled={isLastQuestion}>
-          Next
-        </button>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <div className={styles.question}>
+        <h2>{onboardingStep.question}</h2>
+        <OnboardingStep answers={onboardingAnswers} setAnswer={handleUpdate} />
       </div>
-    </div>
+      <div className={styles.formNavigation}>
+        <Button
+          variant="secondary"
+          onClick={handlePreviousClick}
+          disabled={isFirstQuestion}
+        >
+          Back
+        </Button>
+        <Button variant="secondary" onClick={handleSaveProgress}>
+          Save and continue later
+        </Button>
+        <Button
+          onClick={handleNextClick}
+          type={isLastQuestion ? "submit" : "button"}
+        >
+          {isLastQuestion ? "Submit" : "Next"}
+        </Button>
+      </div>
+    </form>
   );
 }
 

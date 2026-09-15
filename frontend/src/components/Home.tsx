@@ -31,7 +31,7 @@ function Home() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>Onboardings</h1>
+        <h2>Onboardings</h2>
         <Button
           onClick={handleCreateOnboardingSubmission}
           disabled={isCreatingSubmission}

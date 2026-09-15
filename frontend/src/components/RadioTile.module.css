@@ -1,0 +1,26 @@
+.label {
+  border: 1px solid var(--color-burgundy);
+
+  padding: 0.5rem 1rem;
+  height: 4rem;
+  font-family: monospace;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:has(input:checked) {
+    background-color: var(--color-burgundy);
+    border: 1px solid var(--color-burgundy);
+    color: white;
+  }
+
+  &:hover {
+    background: var(--color-light-pink);
+  }
+}
+
+.input {
+  appearance: none;
+  margin: 0;
+}

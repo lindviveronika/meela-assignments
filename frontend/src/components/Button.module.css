@@ -7,11 +7,24 @@
   font-size: var(--font-size-small);
   text-transform: uppercase;
 
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+.primary {
+  background: var(--color-neon);
+  color: var(--color-burgundy);
+
   &:hover {
     background: color-mix(in oklab, var(--color-neon), white 20%);
   }
+}
+.secondary {
+  background: white;
+  color: var(--color-burgundy);
+  border: 1px solid;
 
-  &:disabled {
-    opacity: 0.5;
+  &:hover {
+    background: var(--color-light-pink);
   }
 }

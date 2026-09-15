@@ -5,17 +5,10 @@
   background: white;
   padding: 1.5rem 2rem 2rem;
   margin: 2rem auto;
-  width: calc(100% - 4rem);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  & h1 {
-    margin: 0;
-    font-size: var(--font-size-large);
-    color: var(--color-burgundy);
-    font-weight: normal;
-  }
 }

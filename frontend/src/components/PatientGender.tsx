@@ -1,34 +1,22 @@
-import type { OnboardingStepId, StepProps } from "../types";
-
-const KEY: OnboardingStepId = "patient-gender";
+import type { Gender, StepProps } from "../types";
+import styles from "./PatientGender.module.css";
+import { RadioTile } from "./RadioTile";
 
 export function PatientGender({ setAnswer, answers }: StepProps) {
-  const value = answers[KEY];
+  const value = answers["patient-gender"];
+  const genderOptions: Gender[] = ["male", "female", "non-binary"];
 
   return (
-    <div>
-      <button
-        style={{ outline: value === "male" ? "2px solid blue" : "none" }}
-        onClick={() => setAnswer(KEY, "male")}
-      >
-        Male
-      </button>
-      <button
-        style={{
-          outline: value === "female" ? "2px solid blue" : "none",
-        }}
-        onClick={() => setAnswer(KEY, "female")}
-      >
-        Female
-      </button>
-      <button
-        style={{
-          outline: value === "non-binary" ? "2px solid blue" : "none",
-        }}
-        onClick={() => setAnswer(KEY, "non-binary")}
-      >
-        Non-binary
-      </button>
+    <div className={styles.container}>
+      {genderOptions.map((gender) => (
+        <RadioTile
+          name="patient-gender"
+          key={gender}
+          label={gender.charAt(0).toUpperCase() + gender.slice(1)}
+          isSelected={value === gender}
+          onSelectChange={() => setAnswer("patient-gender", gender)}
+        />
+      ))}
     </div>
   );
 }

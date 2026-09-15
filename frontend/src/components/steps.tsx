@@ -4,15 +4,16 @@ import { PatientGender } from "./PatientGender";
 import { TherapistMinorityCompetence } from "./TherapistMinorityCompetence";
 
 export const onboardingSteps: OnboardingStep[] = [
-  { stepId: "patient-age", label: "Patient Age", element: PatientAge },
+  { stepId: "patient-age", question: "How old are you?", element: PatientAge },
   {
     stepId: "patient-gender",
-    label: "Patient Gender",
+    question: "What gender do you identify as?",
     element: PatientGender,
   },
   {
     stepId: "therapist-minority-competence",
-    label: "Therapist Minority Competence",
+    question:
+      "Do you want your therapist to have knowledge in any of these areas?",
     element: TherapistMinorityCompetence,
   },
 ];

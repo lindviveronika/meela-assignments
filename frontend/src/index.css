@@ -48,3 +48,10 @@ ul {
   padding: 0;
   margin: 0;
 }
+
+h2 {
+  margin: 0;
+  font-size: var(--font-size-large);
+  color: var(--color-burgundy);
+  font-weight: normal;
+}

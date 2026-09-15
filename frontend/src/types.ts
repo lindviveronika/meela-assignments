@@ -1,21 +1,29 @@
 import type { JSX } from "react/jsx-runtime";
 import z from "zod";
 
+const ageRangeSchema = z.enum([
+  "18-25",
+  "26-35",
+  "36-45",
+  "46-55",
+  "56-65",
+  "65+",
+]);
+
+const genderSchema = z.enum(["male", "female", "non-binary"]);
+const minorityCompetenceSchema = z.enum([
+  "lgbtq+",
+  "minority-stress",
+  "neurodivergent",
+  "polyamorous-relationships",
+  "rbts",
+  "transgender-knowledge",
+]);
+
 export const onboardingAnswerSchema = z.object({
-  "patient-age": z
-    .enum(["18-25", "26-35", "36-45", "46-55", "56-65", "65+"])
-    .optional(),
-  "patient-gender": z.enum(["male", "female", "non-binary"]).optional(),
-  "therapist-minority-competence": z
-    .enum([
-      "lgbtq+",
-      "minority-stress",
-      "neurodivergent",
-      "polyamorous-relationships",
-      "rbts",
-      "transgender-knowledge",
-    ])
-    .optional(),
+  "patient-age": ageRangeSchema.optional(),
+  "patient-gender": genderSchema.optional(),
+  "therapist-minority-competence": minorityCompetenceSchema.optional(),
 });
 
 const onboardingStepIdSchema = onboardingAnswerSchema.keyof();
@@ -42,9 +50,13 @@ export const submissionSummaryResponseSchema = z.array(submissionSummarySchema);
 
 export const createSubmissionResponseSchema = z.object({ id: z.string() });
 
+export type AgeRange = z.infer<typeof ageRangeSchema>;
+export type Gender = z.infer<typeof genderSchema>;
+export type MinorityCompetence = z.infer<typeof minorityCompetenceSchema>;
 export type OnboardingStepId = z.infer<typeof onboardingStepIdSchema>;
-
 export type OnboardingAnswers = z.infer<typeof onboardingAnswerSchema>;
+export type SubmissionDetails = z.infer<typeof submissionDetailsSchema>;
+export type SubmissionSummary = z.infer<typeof submissionSummarySchema>;
 
 export type StepProps = {
   answers: OnboardingAnswers;
@@ -56,12 +68,9 @@ export type StepProps = {
 
 export type OnboardingStep = {
   stepId: OnboardingStepId;
-  label: string;
+  question: string;
   element: (props: StepProps) => JSX.Element;
 };
-
-export type SubmissionDetails = z.infer<typeof submissionDetailsSchema>;
-export type SubmissionSummary = z.infer<typeof submissionSummarySchema>;
 
 export type FetchResult<T> =
   | { data: T; error: null }
