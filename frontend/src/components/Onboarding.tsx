@@ -1,9 +1,9 @@
 import { Navigate, useParams } from "react-router";
-import { ONBOARDING_SUBMISSIONS_API } from "../../constants";
-import { useFetchData } from "../../hooks/useFetchData";
-import NotFound from "../../NotFound";
-import type { SubmissionDetails } from "../../types";
-import { submissionDetailsSchema } from "../../types";
+import { ONBOARDING_SUBMISSIONS_API } from "../constants";
+import { useFetchData } from "../hooks/useFetchData";
+import type { SubmissionDetails } from "../types";
+import { submissionDetailsSchema } from "../types";
+import NotFound from "./NotFound";
 import OnboardingForm from "./OnboardingForm";
 import { firstOnboardingStepId, getOnboardingStepById } from "./steps";
 

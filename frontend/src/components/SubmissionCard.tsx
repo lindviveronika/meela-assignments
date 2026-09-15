@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import type { OnboardingStepId, SubmissionSummary } from "../types";
-import { firstOnboardingStepId, onboardingSteps } from "./Onboarding/steps";
+import { firstOnboardingStepId, onboardingSteps } from "./steps";
 
 import styles from "./SubmissionCard.module.css";
 

@@ -1,4 +1,4 @@
-import type { OnboardingStep } from "../../types";
+import type { OnboardingStep } from "../types";
 import { PatientAge } from "./PatientAge";
 import { PatientGender } from "./PatientGender";
 import { TherapistMinorityCompetence } from "./TherapistMinorityCompetence";

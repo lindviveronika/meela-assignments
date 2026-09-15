@@ -1,4 +1,4 @@
-import type { OnboardingStepId, StepProps } from "../../types";
+import type { OnboardingStepId, StepProps } from "../types";
 
 const KEY: OnboardingStepId = "therapist-minority-competence";
 

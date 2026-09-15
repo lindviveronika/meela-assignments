@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router";
-import { ONBOARDING_SUBMISSIONS_API } from "../../constants";
-import { useSendData } from "../../hooks/useSendData";
+import { ONBOARDING_SUBMISSIONS_API } from "../constants";
+import { useSendData } from "../hooks/useSendData";
 import {
   submissionDetailsSchema,
   type OnboardingAnswers,
   type SubmissionDetails,
-} from "../../types";
+} from "../types";
 import styles from "./Onboarding.module.css";
 import {
   firstOnboardingStepId,

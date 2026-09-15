@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
-import Home from "./Home";
-import NotFound from "./NotFound";
-import Onboarding from "./components/Onboarding/Onboarding";
+import Home from "./components/Home";
+import NotFound from "./components/NotFound";
+import Onboarding from "./components/Onboarding";
 
 function App() {
   return (

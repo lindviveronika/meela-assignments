@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router";
-import { Button } from "./components/Button";
-import { firstOnboardingStepId } from "./components/Onboarding/steps";
-import { SubmissionList } from "./components/SubmissionList";
-import { ONBOARDING_SUBMISSIONS_API } from "./constants";
+import { ONBOARDING_SUBMISSIONS_API } from "../constants";
+import { useSendData } from "../hooks/useSendData";
+import { createSubmissionResponseSchema } from "../types";
+import { Button } from "./Button";
 import styles from "./Home.module.css";
-import { useSendData } from "./hooks/useSendData";
-import { createSubmissionResponseSchema } from "./types";
+import { SubmissionList } from "./SubmissionList";
+import { firstOnboardingStepId } from "./steps";
 
 function Home() {
   const navigate = useNavigate();
