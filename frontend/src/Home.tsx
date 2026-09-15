@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router";
+import { ONBOARDING_SUBMISSIONS_API } from "./constants";
 import styles from "./Home.module.css";
+import { useFetchData } from "./hooks/useFetchData";
+import { fetchData } from "./utils/fetchData";
 
 interface SubmissionSummary {
   id: string;
@@ -9,38 +11,24 @@ interface SubmissionSummary {
 }
 
 function Home() {
-  const [submissions, setSubmissions] = useState<SubmissionSummary[]>([]);
-
-  const fetchSubmissions = useCallback(async () => {
-    const response = await fetch("/api/onboarding-submissions");
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch onboarding submissions: ${response.statusText}`,
-      );
-    }
-    const data = await response.json();
-    setSubmissions(data);
-  }, []);
-
-  useEffect(() => {
-    const loadInitialSubmissions = async () => {
-      await fetchSubmissions();
-    };
-    loadInitialSubmissions();
-  }, [fetchSubmissions]);
+  const {
+    data: submissions,
+    error,
+    isLoading,
+  } = useFetchData<SubmissionSummary[]>(ONBOARDING_SUBMISSIONS_API);
 
   async function handleCreateOnboardingSubmission() {
-    const response = await fetch("/api/onboarding-submissions", {
+    await fetchData(ONBOARDING_SUBMISSIONS_API, {
       method: "POST",
     });
+  }
 
-    if (!response.ok) {
-      throw new Error(
-        `Failed to create onboarding submission: ${response.statusText}`,
-      );
-    }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    await fetchSubmissions();
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   return (
@@ -52,7 +40,7 @@ function Home() {
         Create new onboarding submission
       </button>
       <ul className={styles.submissionContainer}>
-        {submissions.map((submission) => (
+        {submissions?.map((submission) => (
           <li className={styles.submission} key={submission.id}>
             <Link className={styles.link} to={`/onboarding/${submission.id}`}>
               <span className={styles.status}>{submission.status}</span>

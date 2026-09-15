@@ -2,7 +2,7 @@ use crate::error::Error;
 use log::info;
 use poem::{
     Route, get, handler,
-    web::{Data, Json},
+    web::{Data, Json, Path},
 };
 use serde::{Deserialize, Serialize};
 use sqlx::SqlitePool;
@@ -27,6 +27,16 @@ struct OnboardingSubmissionSummary {
     id: String,
     status: OnboardingSubmissionStatus,
     created_at: String,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct OnboardingSubmissionDetails {
+    id: String,
+    status: OnboardingSubmissionStatus,
+    created_at: String,
+    answers: String,
+    current_step: Option<String>,
 }
 
 #[handler]
@@ -75,6 +85,42 @@ async fn list(
     Ok(Json(summaries))
 }
 
+#[handler]
+async fn get_by_id(
+    Data(pool): Data<&SqlitePool>,
+    Path(id): Path<String>,
+) -> Result<Json<OnboardingSubmissionDetails>, Error> {
+    let row = sqlx::query!(
+        r#"
+        SELECT
+            id as "id!",
+            status as "status: OnboardingSubmissionStatus",
+            created_at as "created_at!",
+            answers as "answers!",
+            current_step
+        FROM onboarding_submissions
+        WHERE id = ?
+        "#,
+        id
+    )
+    .fetch_one(pool)
+    .await?;
+
+    let details = OnboardingSubmissionDetails {
+        id: row.id,
+        status: row.status,
+        created_at: row.created_at,
+        answers: row.answers,
+        current_step: row.current_step,
+    };
+
+    info!("Fetched onboarding submission by id");
+
+    Ok(Json(details))
+}
+
 pub fn routes() -> Route {
-    Route::new().at("/", get(list).post(create))
+    Route::new()
+        .at("/", get(list).post(create))
+        .at("/:id", get(get_by_id))
 }
