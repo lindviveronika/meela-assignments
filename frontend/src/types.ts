@@ -2,7 +2,10 @@ import type { JSX } from "react/jsx-runtime";
 
 type SubmissionStatus = "draft" | "submitted";
 
-export type OnboardingStepId = "patient-age" | "patient-gender";
+export type OnboardingStepId =
+  | "patient-age"
+  | "patient-gender"
+  | "therapist-minority-competence";
 
 export type OnboardingStep = {
   stepId: OnboardingStepId;
