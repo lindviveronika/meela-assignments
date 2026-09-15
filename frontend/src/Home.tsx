@@ -4,10 +4,10 @@ import { ONBOARDING_SUBMISSIONS_API } from "./constants";
 import styles from "./Home.module.css";
 import { useFetchData } from "./hooks/useFetchData";
 import { useSendData } from "./hooks/useSendData";
-import type {
-  CreateOnboardingSubmissionResponse,
-  OnboardingStepId,
-  SubmissionSummary,
+import {
+  createSubmissionResponseSchema,
+  submissionSummaryResponseSchema,
+  type OnboardingStepId,
 } from "./types";
 
 function getStepLink(submissionId: string, stepId: OnboardingStepId | null) {
@@ -22,15 +22,13 @@ function Home() {
     data: submissions,
     error: loadSubmissionsError,
     isLoading,
-  } = useFetchData<SubmissionSummary[]>(ONBOARDING_SUBMISSIONS_API);
+  } = useFetchData(ONBOARDING_SUBMISSIONS_API, submissionSummaryResponseSchema);
 
   const {
     sendData,
     error: createSubmissionError,
     isLoading: isCreatingSubmission,
-  } = useSendData<CreateOnboardingSubmissionResponse>(
-    ONBOARDING_SUBMISSIONS_API,
-  );
+  } = useSendData(ONBOARDING_SUBMISSIONS_API, createSubmissionResponseSchema);
 
   async function handleCreateOnboardingSubmission() {
     const result = await sendData({
@@ -45,13 +43,12 @@ function Home() {
   }
 
   function renderSubmissionList() {
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
+    if (isLoading) return <div>Loading...</div>;
 
-    if (loadSubmissionsError) {
-      return <div>Error: {loadSubmissionsError.message}</div>;
-    }
+    if (loadSubmissionsError)
+      return (
+        <div>Something went wrong when loading the onboarding submissions</div>
+      );
 
     return (
       <ul className={styles.submissionContainer}>
@@ -83,7 +80,9 @@ function Home() {
         Create new onboarding submission
       </button>
       {createSubmissionError && (
-        <div>Error: {createSubmissionError.message}</div>
+        <div>
+          Something went wrong when creating a new onboarding submission
+        </div>
       )}
       {renderSubmissionList()}
     </div>

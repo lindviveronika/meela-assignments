@@ -37,7 +37,7 @@ struct OnboardingSubmissionDetails {
     status: OnboardingSubmissionStatus,
     created_at: String,
     updated_at: String,
-    answers: String,
+    answers: serde_json::Value,
     current_step: Option<String>,
 }
 
@@ -123,7 +123,7 @@ async fn get_by_id(
         id: row.id,
         status: row.status,
         created_at: row.created_at,
-        answers: row.answers,
+        answers: serde_json::from_str(&row.answers)?,
         current_step: row.current_step,
         updated_at: row.updated_at,
     };
@@ -185,7 +185,7 @@ async fn update(
         status: updated.status,
         created_at: updated.created_at,
         updated_at: updated.updated_at,
-        answers: updated.answers,
+        answers: serde_json::from_str(&updated.answers)?,
         current_step: updated.current_step,
     };
 

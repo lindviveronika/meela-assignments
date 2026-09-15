@@ -10,6 +10,8 @@ pub enum Error {
     Var(#[from] std::env::VarError),
     #[error(transparent)]
     Dotenv(#[from] dotenv::Error),
+    #[error(transparent)]
+    Json(#[from] serde_json::Error),
     #[error("Submission not found")]
     NotFound,
     #[error("Submission already submitted")]

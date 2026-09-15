@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import type z from "zod";
 import { fetchData } from "../utils/fetchData";
 
-export function useFetchData<T>(url: string) {
+export function useFetchData<T>(url: string, schema: z.ZodType<T>) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -12,7 +13,7 @@ export function useFetchData<T>(url: string) {
     const loadDataFromApi = async () => {
       setIsLoading(true);
 
-      const result = await fetchData<T>(url, {
+      const result = await fetchData<T>(url, schema, {
         signal: abortController.signal,
       });
 
@@ -21,6 +22,7 @@ export function useFetchData<T>(url: string) {
       }
 
       if (result.error) {
+        console.error(result.error);
         setError(result.error);
         setData(null);
         setIsLoading(false);
@@ -37,7 +39,7 @@ export function useFetchData<T>(url: string) {
     return () => {
       abortController.abort();
     };
-  }, [url]);
+  }, [url, schema]);
 
   return { data, error, isLoading };
 }

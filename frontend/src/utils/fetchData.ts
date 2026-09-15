@@ -1,7 +1,9 @@
+import type z from "zod";
 import type { FetchResult } from "../types";
 
 export async function fetchData<T>(
   url: string,
+  schema: z.ZodType<T>,
   options?: RequestInit,
 ): Promise<FetchResult<T>> {
   try {
@@ -16,7 +18,11 @@ export async function fetchData<T>(
 
     const data = await response.json();
 
-    return { data, error: null };
+    const parseResult = schema.safeParse(data);
+    if (!parseResult.success) {
+      throw new Error(parseResult.error.message);
+    }
+    return { data: parseResult.data, error: null };
   } catch (error) {
     return {
       data: null,

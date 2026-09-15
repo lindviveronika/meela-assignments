@@ -3,6 +3,6 @@ CREATE TABLE onboarding_submissions (
     created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
     status          TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'submitted')),
-    answers         TEXT NOT NULL DEFAULT '{}',
+    answers         TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(answers)),
     current_step    TEXT
 );

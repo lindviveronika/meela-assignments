@@ -1,8 +1,12 @@
 import { useCallback, useState } from "react";
+import type z from "zod";
 import type { FetchResult } from "../types";
 import { fetchData } from "../utils/fetchData";
 
-export function useSendData<T>(url: string): {
+export function useSendData<T>(
+  url: string,
+  schema: z.ZodType<T>,
+): {
   error: Error | null;
   isLoading: boolean;
   sendData: (options?: RequestInit) => Promise<FetchResult<T>>;
@@ -14,11 +18,12 @@ export function useSendData<T>(url: string): {
     async (options?: RequestInit): Promise<FetchResult<T>> => {
       setIsLoading(true);
 
-      const result = await fetchData<T>(url, options);
+      const result = await fetchData<T>(url, schema, options);
 
       setIsLoading(false);
 
       if (result.error) {
+        console.error(result.error);
         setError(result.error);
         return { data: null, error: result.error };
       }
@@ -26,7 +31,7 @@ export function useSendData<T>(url: string): {
       setError(null);
       return { data: result.data, error: null };
     },
-    [url],
+    [url, schema],
   );
 
   return { error, isLoading, sendData };
