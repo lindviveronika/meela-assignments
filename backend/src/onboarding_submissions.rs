@@ -36,8 +36,16 @@ struct OnboardingSubmissionDetails {
     id: String,
     status: OnboardingSubmissionStatus,
     created_at: String,
+    updated_at: String,
     answers: String,
     current_step: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct UpdateOnboardingSubmissionRequest {
+    answers: serde_json::Value,
+    current_step: String,
 }
 
 #[handler]
@@ -99,6 +107,7 @@ async fn get_by_id(
             id as "id!",
             status as "status: OnboardingSubmissionStatus",
             created_at as "created_at!",
+            updated_at as "updated_at!",
             answers as "answers!",
             current_step
         FROM onboarding_submissions
@@ -106,8 +115,9 @@ async fn get_by_id(
         "#,
         id
     )
-    .fetch_one(pool)
-    .await?;
+    .fetch_optional(pool)
+    .await?
+    .ok_or(Error::NotFound)?;
 
     let details = OnboardingSubmissionDetails {
         id: row.id,
@@ -115,6 +125,7 @@ async fn get_by_id(
         created_at: row.created_at,
         answers: row.answers,
         current_step: row.current_step,
+        updated_at: row.updated_at,
     };
 
     info!("Fetched onboarding submission by id");
@@ -122,8 +133,69 @@ async fn get_by_id(
     Ok(Json(details))
 }
 
+#[handler]
+async fn update(
+    Data(pool): Data<&SqlitePool>,
+    Path(id): Path<String>,
+    Json(payload): Json<UpdateOnboardingSubmissionRequest>,
+) -> Result<Json<OnboardingSubmissionDetails>, Error> {
+    let updated = sqlx::query!(
+        r#"
+        UPDATE onboarding_submissions
+        SET answers = ?,
+            current_step = ?,
+            updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+        WHERE id = ? and status = 'draft'
+        RETURNING
+            id as "id!",
+            status as "status: OnboardingSubmissionStatus",
+            created_at as "created_at!",
+            updated_at as "updated_at!",
+            answers as "answers!",
+            current_step
+        "#,
+        payload.answers,
+        payload.current_step,
+        id
+    )
+    .fetch_optional(pool)
+    .await?;
+
+    let Some(updated) = updated else {
+        let exists = sqlx::query!(
+            r#"
+            SELECT id
+            FROM onboarding_submissions
+            WHERE id = ?
+            "#,
+            id
+        )
+        .fetch_optional(pool)
+        .await?;
+
+        if exists.is_none() {
+            return Err(Error::NotFound);
+        } else {
+            return Err(Error::AlreadySubmitted);
+        }
+    };
+
+    let details = OnboardingSubmissionDetails {
+        id: updated.id,
+        status: updated.status,
+        created_at: updated.created_at,
+        updated_at: updated.updated_at,
+        answers: updated.answers,
+        current_step: updated.current_step,
+    };
+
+    info!("Updated onboarding submission");
+
+    Ok(Json(details))
+}
+
 pub fn routes() -> Route {
     Route::new()
         .at("/", get(list).post(create))
-        .at("/:id", get(get_by_id))
+        .at("/:id", get(get_by_id).patch(update))
 }

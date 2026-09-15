@@ -5,7 +5,10 @@ export async function fetchData<T>(
   options?: RequestInit,
 ): Promise<FetchResult<T>> {
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, {
+      ...options,
+      headers: { "Content-Type": "application/json", ...options?.headers },
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`);

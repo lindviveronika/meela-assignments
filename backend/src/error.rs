@@ -10,10 +10,18 @@ pub enum Error {
     Var(#[from] std::env::VarError),
     #[error(transparent)]
     Dotenv(#[from] dotenv::Error),
+    #[error("Submission not found")]
+    NotFound,
+    #[error("Submission already submitted")]
+    AlreadySubmitted,
 }
 
 impl ResponseError for Error {
     fn status(&self) -> StatusCode {
-        StatusCode::INTERNAL_SERVER_ERROR
+        match self {
+            Error::NotFound => StatusCode::NOT_FOUND,
+            Error::AlreadySubmitted => StatusCode::CONFLICT,
+            _ => StatusCode::INTERNAL_SERVER_ERROR,
+        }
     }
 }

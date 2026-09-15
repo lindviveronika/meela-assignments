@@ -1,7 +1,9 @@
-import { Navigate, useNavigate, useParams } from "react-router";
+import { Link, Navigate, useNavigate, useParams } from "react-router";
 import { ONBOARDING_SUBMISSIONS_API } from "../../constants";
 import { useFetchData } from "../../hooks/useFetchData";
+import { useSendData } from "../../hooks/useSendData";
 import type { SubmissionDetails } from "../../types";
+import styles from "./Onboarding.module.css";
 import {
   firstOnboardingStepId,
   getOnboardingStepById,
@@ -11,7 +13,12 @@ import {
 function Onboarding() {
   const { id, stepId } = useParams();
   const navigate = useNavigate();
+
   const { isLoading, error } = useFetchData<SubmissionDetails>(
+    `${ONBOARDING_SUBMISSIONS_API}/${id}`,
+  );
+
+  const { sendData } = useSendData<SubmissionDetails>(
     `${ONBOARDING_SUBMISSIONS_API}/${id}`,
   );
 
@@ -47,16 +54,26 @@ function Onboarding() {
 
   const handleNextClick = () => goToStep(1);
   const handlePreviousClick = () => goToStep(-1);
+  const handleSaveProgress = () => {
+    sendData({
+      method: "PATCH",
+      body: JSON.stringify({ currentStep: stepId, answers: {} }), // TODO: Replace empty answers with actual answers from the form
+    });
+  };
 
   return (
-    <div>
+    <div className={styles.container}>
+      <Link to="/">Home</Link>
+      <button onClick={handleSaveProgress}>Save and continue later</button>
       {onboardingStep.element}
-      <button onClick={handlePreviousClick} disabled={isFirstQuestion}>
-        Back
-      </button>
-      <button onClick={handleNextClick} disabled={isLastQuestion}>
-        Next
-      </button>
+      <div>
+        <button onClick={handlePreviousClick} disabled={isFirstQuestion}>
+          Back
+        </button>
+        <button onClick={handleNextClick} disabled={isLastQuestion}>
+          Next
+        </button>
+      </div>
     </div>
   );
 }
