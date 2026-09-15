@@ -27,6 +27,7 @@ struct OnboardingSubmissionSummary {
     id: String,
     status: OnboardingSubmissionStatus,
     created_at: String,
+    current_step: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -63,7 +64,8 @@ async fn list(
         SELECT
             id as "id!",
             status as "status: OnboardingSubmissionStatus",
-            created_at as "created_at!"
+            created_at as "created_at!",
+            current_step
         FROM onboarding_submissions
         ORDER BY created_at DESC
         "#
@@ -77,6 +79,7 @@ async fn list(
             id: row.id,
             status: row.status,
             created_at: row.created_at,
+            current_step: row.current_step,
         })
         .collect();
 

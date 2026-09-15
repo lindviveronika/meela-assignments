@@ -1,12 +1,19 @@
 import { Link, useNavigate } from "react-router";
+import { firstOnboardingStepId } from "./components/Onboarding/steps";
 import { ONBOARDING_SUBMISSIONS_API } from "./constants";
 import styles from "./Home.module.css";
 import { useFetchData } from "./hooks/useFetchData";
 import { useSendData } from "./hooks/useSendData";
 import type {
   CreateOnboardingSubmissionResponse,
+  OnboardingStepId,
   SubmissionSummary,
 } from "./types";
+
+function getStepLink(submissionId: string, stepId: OnboardingStepId | null) {
+  const currentStep = stepId ?? firstOnboardingStepId;
+  return `/onboarding/${submissionId}/${currentStep}`;
+}
 
 function Home() {
   const navigate = useNavigate();
@@ -34,7 +41,7 @@ function Home() {
       return;
     }
 
-    navigate(`/onboarding/${result.data.id}`);
+    navigate(`/onboarding/${result.data.id}/${firstOnboardingStepId}`);
   }
 
   function renderSubmissionList() {
@@ -50,7 +57,10 @@ function Home() {
       <ul className={styles.submissionContainer}>
         {submissions?.map((submission) => (
           <li className={styles.submission} key={submission.id}>
-            <Link className={styles.link} to={`/onboarding/${submission.id}`}>
+            <Link
+              className={styles.link}
+              to={getStepLink(submission.id, submission.currentStep)}
+            >
               <span className={styles.status}>{submission.status}</span>
               <span className={styles.id}>{submission.id} </span>
               <span className={styles.createdAt}>
