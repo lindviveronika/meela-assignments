@@ -1,28 +1,14 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import { Button } from "./components/Button";
 import { firstOnboardingStepId } from "./components/Onboarding/steps";
+import { SubmissionList } from "./components/SubmissionList";
 import { ONBOARDING_SUBMISSIONS_API } from "./constants";
 import styles from "./Home.module.css";
-import { useFetchData } from "./hooks/useFetchData";
 import { useSendData } from "./hooks/useSendData";
-import {
-  createSubmissionResponseSchema,
-  submissionSummaryResponseSchema,
-  type OnboardingStepId,
-} from "./types";
-
-function getStepLink(submissionId: string, stepId: OnboardingStepId | null) {
-  const currentStep = stepId ?? firstOnboardingStepId;
-  return `/onboarding/${submissionId}/${currentStep}`;
-}
+import { createSubmissionResponseSchema } from "./types";
 
 function Home() {
   const navigate = useNavigate();
-
-  const {
-    data: submissions,
-    error: loadSubmissionsError,
-    isLoading,
-  } = useFetchData(ONBOARDING_SUBMISSIONS_API, submissionSummaryResponseSchema);
 
   const {
     sendData,
@@ -42,49 +28,24 @@ function Home() {
     navigate(`/onboarding/${result.data.id}/${firstOnboardingStepId}`);
   }
 
-  function renderSubmissionList() {
-    if (isLoading) return <div>Loading...</div>;
-
-    if (loadSubmissionsError)
-      return (
-        <div>Something went wrong when loading the onboarding submissions</div>
-      );
-
-    return (
-      <ul className={styles.submissionContainer}>
-        {submissions?.map((submission) => (
-          <li className={styles.submission} key={submission.id}>
-            <Link
-              className={styles.link}
-              to={getStepLink(submission.id, submission.currentStep)}
-            >
-              <span className={styles.status}>{submission.status}</span>
-              <span className={styles.id}>{submission.id} </span>
-              <span className={styles.createdAt}>
-                {new Date(submission.createdAt).toLocaleString()}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
   return (
     <div className={styles.container}>
-      <button
-        className={styles.button}
-        onClick={handleCreateOnboardingSubmission}
-        disabled={isCreatingSubmission}
-      >
-        Create new onboarding submission
-      </button>
+      <header className={styles.header}>
+        <h1>Onboardings</h1>
+        <Button
+          onClick={handleCreateOnboardingSubmission}
+          disabled={isCreatingSubmission}
+        >
+          + New
+        </Button>
+      </header>
+
       {createSubmissionError && (
         <div>
           Something went wrong when creating a new onboarding submission
         </div>
       )}
-      {renderSubmissionList()}
+      <SubmissionList />
     </div>
   );
 }

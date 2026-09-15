@@ -1,0 +1,32 @@
+.link {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid
+    oklch(from var(--color-light-pink) calc(l - 0.08) calc(c + 0.02) h);
+  background: var(--color-light-pink);
+
+  &:hover {
+    border: 1px solid
+      oklch(from var(--color-light-pink) calc(l - 0.2) calc(c + 0.08) h);
+  }
+}
+
+.status {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.info {
+  font-size: var(--font-size-xsmall);
+  color: var(--color-burgundy);
+  font-family: monospace;
+
+  &:nth-last-of-type(2) {
+    margin-right: auto;
+  }
+}

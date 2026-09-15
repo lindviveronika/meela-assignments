@@ -61,6 +61,7 @@ export type OnboardingStep = {
 };
 
 export type SubmissionDetails = z.infer<typeof submissionDetailsSchema>;
+export type SubmissionSummary = z.infer<typeof submissionSummarySchema>;
 
 export type FetchResult<T> =
   | { data: T; error: null }

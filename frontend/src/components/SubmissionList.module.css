@@ -1,0 +1,9 @@
+.submissionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.submission {
+  margin: 0;
+}

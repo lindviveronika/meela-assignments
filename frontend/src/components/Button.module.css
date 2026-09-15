@@ -1,0 +1,17 @@
+.button {
+  padding: 1rem 1.5rem;
+  background: var(--color-neon);
+  cursor: pointer;
+  border: none;
+  color: var(--color-burgundy);
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+
+  &:hover {
+    background: color-mix(in oklab, var(--color-neon), white 20%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}

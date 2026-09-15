@@ -1,31 +1,38 @@
 :root {
-  --text: black;
-  --bg: #fff;
+  --color-pink: #ff98a4;
+  --color-burgundy: #6b1f2c;
+  --color-green: #06332b;
+  --color-surface-green: var(--color-green);
+  --color-light-green: #cadcd9;
+  --color-lighter-green: #f6fffe;
+  --color-neon: #ebff00;
+  --color-light-pink: #faf0f2;
+  --color-orange: rgb(218, 116, 22);
+  --color-light-orange: rgb(247, 160, 79);
 
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --color-text-primary: #1b1b1b;
 
-  font: 16px/145% var(--sans);
+  --font-size-base: 1rem;
+  --font-size-small: 0.85rem;
+  --font-size-xsmall: 0.75rem;
+  --font-size-large: 1.25rem;
 
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  font-size: var(--font-size-base);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color-scheme: light;
+  color: var(--color-text-primary);
+  background: var(--color-pink);
   font-synthesis: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #fff;
-    --bg: black;
-  }
+* {
+  box-sizing: border-box;
 }
 
 #root {
   max-width: 100%;
   margin: 0 auto;
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
 }
 
 body {
