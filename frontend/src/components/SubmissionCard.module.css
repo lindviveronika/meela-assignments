@@ -24,7 +24,7 @@
 .info {
   font-size: var(--font-size-xsmall);
   color: var(--color-burgundy);
-  font-family: monospace;
+  font-family: var(--font-mono);
 
   &:nth-last-of-type(2) {
     margin-right: auto;
