@@ -47,7 +47,7 @@ export function SubmissionCard({
       </span>
       <span className={styles.info}>{submission.id.split("-")[0]} </span>
       <span className={styles.info}>
-        {new Date(submission.createdAt).toLocaleString(undefined, dateOptions)}
+        {new Date(submission.updatedAt).toLocaleString(undefined, dateOptions)}
       </span>
       <span className={styles.info}>
         {currentStepNumber > 0

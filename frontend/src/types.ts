@@ -34,7 +34,7 @@ const submissionStatusSchema = z.enum(["draft", "submitted"]);
 const submissionSummarySchema = z.object({
   id: z.string(),
   status: submissionStatusSchema,
-  createdAt: z.string(),
+  updatedAt: z.string(),
   currentStep: onboardingStepIdSchema.nullable(),
 });
 

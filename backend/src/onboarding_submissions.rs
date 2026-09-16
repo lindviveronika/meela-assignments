@@ -26,7 +26,7 @@ struct CreateOnboardingSubmissionResponse {
 struct OnboardingSubmissionSummary {
     id: String,
     status: OnboardingSubmissionStatus,
-    created_at: String,
+    updated_at: String,
     current_step: Option<String>,
 }
 
@@ -72,10 +72,10 @@ async fn list(
         SELECT
             id as "id!",
             status as "status: OnboardingSubmissionStatus",
-            created_at as "created_at!",
+            updated_at as "updated_at!",
             current_step
         FROM onboarding_submissions
-        ORDER BY created_at DESC
+        ORDER BY updated_at DESC
         "#
     )
     .fetch_all(pool)
@@ -86,7 +86,7 @@ async fn list(
         .map(|row| OnboardingSubmissionSummary {
             id: row.id,
             status: row.status,
-            created_at: row.created_at,
+            updated_at: row.updated_at,
             current_step: row.current_step,
         })
         .collect();
