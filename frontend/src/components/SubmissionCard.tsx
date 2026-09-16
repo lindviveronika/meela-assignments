@@ -22,14 +22,7 @@ function getStatusText(
     return "Not Started";
   }
 
-  switch (status) {
-    case "submitted":
-      return "Submitted";
-    case "draft":
-      return "In Progress";
-    default:
-      return "Unknown";
-  }
+  return status === "submitted" ? "Submitted" : "In Progress";
 }
 
 export function SubmissionCard({ submission }: SubmissionCardProps) {
