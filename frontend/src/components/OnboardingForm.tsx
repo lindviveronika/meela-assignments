@@ -25,8 +25,12 @@ export function OnboardingForm({
   const [onboardingAnswers, setOnboardingAnswers] = useState<OnboardingAnswers>(
     submission.answers,
   );
+  const [savedStatus, setSavedStatus] = useState<{
+    savedAt: number;
+    type: "success" | "error";
+  } | null>(null);
 
-  const { sendData } = useSendData(
+  const { sendData, isLoading } = useSendData(
     `${ONBOARDING_SUBMISSIONS_API}/${id}`,
     submissionDetailsSchema,
   );
@@ -42,20 +46,25 @@ export function OnboardingForm({
     if (newIndex < 0 || newIndex >= onboardingSteps.length) {
       return;
     }
+
     const newStepId = onboardingSteps[newIndex].stepId;
     navigate(`/onboarding/${id}/${newStepId}`);
   };
 
   const handleNextClick = () => goToStep(1);
   const handlePreviousClick = () => goToStep(-1);
-  const handleSaveProgress = () => {
-    // TODO: Handle errors and loading state and show an indication of that it has been saved
-    sendData({
+  const handleSaveProgress = async () => {
+    const result = await sendData({
       method: "PATCH",
       body: JSON.stringify({
         currentStep: onboardingStep.stepId,
         answers: onboardingAnswers,
       }),
+    });
+
+    setSavedStatus({
+      savedAt: Date.now(),
+      type: result.error ? "error" : "success",
     });
   };
 
@@ -74,20 +83,31 @@ export function OnboardingForm({
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {savedStatus && (
+        <p role="status" key={savedStatus.savedAt} className={styles.message}>
+          {savedStatus.type === "success"
+            ? "✓ Progress saved"
+            : "✗ Error saving progress"}
+        </p>
+      )}
       <div className={styles.question}>
         <h2>{onboardingStep.question}</h2>
         <OnboardingStep answers={onboardingAnswers} setAnswer={handleUpdate} />
       </div>
       <div className={styles.formNavigation}>
         <Button
-          variant="secondary"
+          variant="link"
           onClick={handlePreviousClick}
           disabled={isFirstQuestion}
         >
-          Back
+          ← Back
         </Button>
-        <Button variant="secondary" onClick={handleSaveProgress}>
-          Save and continue later
+        <Button
+          disabled={isLoading}
+          variant="secondary"
+          onClick={handleSaveProgress}
+        >
+          Save for later
         </Button>
         <Button
           onClick={handleNextClick}

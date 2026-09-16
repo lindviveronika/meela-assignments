@@ -11,7 +11,7 @@ export function Button({
   onClick: () => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "link";
 }) {
   return (
     <button

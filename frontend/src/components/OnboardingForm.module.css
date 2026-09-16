@@ -1,18 +1,53 @@
+.form {
+  --inline-padding: 2rem;
+
+  position: relative;
+}
 .question {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 1rem;
-  padding: 1.5rem 2rem 2rem;
+  padding: 1.5rem var(--inline-padding) 2rem;
   background: white;
-  margin: 2rem auto;
+  margin: 2rem auto 0;
 }
 
 .formNavigation {
+  padding: 1rem var(--inline-padding) 1rem;
   display: flex;
   gap: 1rem;
+  align-items: center;
+  border-top: 2px solid var(--color-light-pink);
+  width: 100%;
+  background: white;
 
   & > :first-child {
     margin-right: auto;
+  }
+}
+
+.message {
+  background-color: color-mix(in oklab, var(--color-pink), white 50%);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xsmall);
+  color: var(--color-burgundy);
+  position: absolute;
+  top: -1rem;
+  right: 0;
+  translate: 0 -100%;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  animation: dismiss 3s forwards;
+}
+
+@keyframes dismiss {
+  0%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
   }
 }
