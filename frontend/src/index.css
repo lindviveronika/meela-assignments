@@ -1,13 +1,8 @@
 :root {
   --color-pink: #ff98a4;
-  --color-burgundy: #6b1f2c;
-  --color-green: #06332b;
-  --color-light-green: #cadcd9;
-  --color-lighter-green: #f6fffe;
-  --color-neon: #ebff00;
   --color-light-pink: #faf0f2;
-  --color-orange: rgb(218, 116, 22);
-  --color-light-orange: rgb(247, 160, 79);
+  --color-burgundy: #6b1f2c;
+  --color-neon: #ebff00;
 
   --color-text-primary: #1b1b1b;
 
