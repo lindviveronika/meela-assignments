@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::SqlitePool;
 use uuid::Uuid;
 
-#[derive(Debug, Serialize, Deserialize, sqlx::Type)]
+#[derive(Debug, Serialize, sqlx::Type)]
 #[serde(rename_all = "lowercase")]
 #[sqlx(rename_all = "lowercase")]
 enum OnboardingSubmissionStatus {
@@ -21,7 +21,7 @@ struct CreateOnboardingSubmissionResponse {
     id: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 struct OnboardingSubmissionSummary {
     id: String,
@@ -30,7 +30,7 @@ struct OnboardingSubmissionSummary {
     current_step: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 struct OnboardingSubmissionDetails {
     id: String,
