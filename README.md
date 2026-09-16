@@ -10,6 +10,14 @@ I chose to save the answers as a JSON blob in the database since that will give 
 
 The frontend loads the ongoing form submission by the id and then navigates to the correct step in the form and sets the form state from the answers returned from the API.
 
+## Screenshots
+
+- [First question](screenshots/Step1.png)
+- [Second question](screenshots/Step2.png)
+- [Third question](screenshots/Step3.png)
+- [Progress saved](screenshots/SaveProgress.png)
+- [Home](screenshots/Home.png)
+
 ## How to set it up
 
 Start the backend in one terminal:
