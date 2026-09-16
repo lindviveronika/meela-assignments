@@ -14,14 +14,7 @@ const dateOptions: Intl.DateTimeFormatOptions = {
   minute: "numeric",
 };
 
-function getStatusText(
-  status: SubmissionSummary["status"],
-  currentStepNumber: number,
-) {
-  if (currentStepNumber === 0) {
-    return "Not Started";
-  }
-
+function getStatusText(status: SubmissionSummary["status"]) {
   return status === "submitted" ? "Submitted" : "In Progress";
 }
 
@@ -34,9 +27,7 @@ export function SubmissionCard({ submission }: SubmissionCardProps) {
 
   return (
     <Link className={styles.link} to={`/onboarding/${submission.id}`}>
-      <span className={styles.status}>
-        {getStatusText(submission.status, currentStepNumber)}
-      </span>
+      <span className={styles.status}>{getStatusText(submission.status)}</span>
       <span className={styles.info}>{submission.id.split("-")[0]} </span>
       <span className={styles.info}>
         {new Date(submission.updatedAt).toLocaleString(undefined, dateOptions)}
