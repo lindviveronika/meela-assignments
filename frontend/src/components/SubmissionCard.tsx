@@ -1,8 +1,11 @@
 import { Link } from "react-router";
 import type { SubmissionSummary } from "../types";
 import { onboardingSteps } from "./steps";
-
 import styles from "./SubmissionCard.module.css";
+
+interface SubmissionCardProps {
+  submission: SubmissionSummary;
+}
 
 const dateOptions: Intl.DateTimeFormatOptions = {
   month: "short",
@@ -29,11 +32,7 @@ function getStatusText(
   }
 }
 
-export function SubmissionCard({
-  submission,
-}: {
-  submission: SubmissionSummary;
-}) {
+export function SubmissionCard({ submission }: SubmissionCardProps) {
   const currentStepNumber =
     onboardingSteps.findIndex(
       (step) => step.stepId === submission.currentStep,

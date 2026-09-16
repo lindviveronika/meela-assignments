@@ -1,16 +1,18 @@
 import styles from "./RadioTile.module.css";
 
+interface RadioTileProps {
+  label: string;
+  isSelected: boolean;
+  onSelectChange: () => void;
+  name: string;
+}
+
 export function RadioTile({
   label,
   isSelected,
   onSelectChange,
   name,
-}: {
-  label: string;
-  isSelected: boolean;
-  onSelectChange: () => void;
-  name: string;
-}) {
+}: RadioTileProps) {
   return (
     <label className={styles.label}>
       <input
