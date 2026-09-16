@@ -1,73 +1,48 @@
 # Take-home task: Client Onboarding Form
 
-## Background
+## Summary
 
-At Meela, we help match clients to therapists, but first clients need to complete comprehensive intake forms. These
-forms are complex with multiple sections and sensitive mental health questions requiring careful UX.
+Here is my solution to the take-home task. I chose to use React on the frontend since that is what I have most experience with. That is also the part where I put most of my effort.
 
-The forms can take some time to get through. The reality is that sometimes life will demand immediate attention from our
-users such that they do not complete the form in a single sitting and they would benefit from having a partial form
-submission to return to. And that is the crux of this task.
+The application has a home page where you can create new onboarding submissions and see a list of existing drafts. This is of course only for testing and reviewing purposes. ☺️
 
-## Objective
+I chose to save the answers as a JSON blob in the database since that will give more flexibility in the future when questions are added or removed. Which step the user is on is saved as an id instead of a number in case the question changes order. If the saved step would be removed the frontend falls back to the first question. The frontend owns the order of the questions.
 
-Build a _simple_ client intake form system that supports **partial form submission** with the ability to resume later.
-Like, really simple. Proof-of-concept level. Don't worry about edge-cases or validation. Visit [our
-site](https://app.meelahealth.com) and cherry pick a small amount of different questions that make up your form.
+The frontend loads the ongoing form submission by the id and then navigates to the correct step in the form and sets the form state from the answers returned from the API.
 
-**The main goal**: A user should be able to fill out part of a form, save their progress, and return later to continue
-where they left off.
+## How to set it up
 
-Dos:
+Start the backend in one terminal:
 
-1. **Fork our repo!**
-2. **Multi-step form** at least 3 questions.
-3. **Save progress** - user can save and exit at any point - this can happen automatically, using a timer, or a button.
-   All are fine.
-4. **Resume capability** - user can return and continue from where they left off
-5. **Please play to your strengths** - if you feel that you are more front-end than backend lean into that and vice versa!
-6. **Commit screenshots** - commit some screenshots of how your application looks.
+```sh
+cd backend
+cargo install sqlx-cli
+sqlx db create
+sqlx migrate run
+cargo run
+```
 
-Don'ts:
+Start the frontend in another terminal:
 
-1. **No auth required** - having a UUID in a URL is super-good enough!
-2. **No versioning required** - don't worry about handling form schema changes.
-3. **No i18n!** - overkill!
+```sh
+cd frontend
+npm install
+npm run dev
+```
 
-**Time Estimate:** spend _max_ 4-6 hours, please.
+Open http://localhost:5173/
 
-If you do not finish in this time, stop! We can talk about what you did manage to accomplish in that time!
+## Future improvements
 
-## Technology Stack
+- Actual submit logic including validation (both frontend and backend) of that required questions have been answered and have the correct format. This would include adding an answer schema to the backend which will be needed to actually use the data in the future. When doing this I would also add validation to the update endpoint to make sure the current step is a known step and that the answers conform to the form schema with all fields optional.
+- Submit page in form instead of just exchanging the next button on last page to make it more clear for the user that the form will be submitted.
+- Handle the case if someone navigates (by using an old bookmark or similar) to an already submitted form. I would've shown a message saying that it has already been submitted.
+- Proper styling of loading and error messages.
+- Automatic saving. I went for the save button now for simplicity. Having both would be nice.
+- Responsiveness. The navigation buttons on the bottom of the form doesn’t fit well on a smaller screen.
+- Unit tests!
 
-**Frontend**: Use React or Solid.js (your choice)
+## Note
 
-**Backend**: Feel free to use the provided Rust code in the `/backend` directory - or butcher it and take what you need.
-We do take into account your prior experience with Rust so if you don't have any: do not worry, we will adapt our
-evaluation accordingly.
-
-**Database**: Must use a database (relational or NoSQL - your choice really and then you might have to make some other
-choices than what has been made in the `/backend` directory)
-
-**API**: GraphQL or REST (your choice)
-
-**Requirements**:
-
-- Frontend must communicate with a backend
-- Backend must persist data to a database
-  - That means you should **not** save the partial submissions using `localStorage` in the browser!
-
-## Deliverables
-
-1. Make the thing work
-2. Tell us how to set it up and run it so we can review it:
-   1. Either write a `.txt`/`.md` file that tells us which invocations of `cargo run`, `npm run dev`, `yarn dev`, ... we have to use, or
-   2. simply provide a `justfile`/`Makefile` for us.
-3. Add some screenshots showcasing the UI
-4. Send us a link to your fork on your Github account!
-
-## GO GO GO! 🌶️🌶️🌶️
-
-**Remember**, focus on the core "resume" functionality - that is what we are evaluating. And again, please play to your strengths. If you
-feel that you are more front-end than backend lean into that and vice versa. Feel free to leave a little note in your fork about which
-one you decided to put more effort into to make it easier for us when reviewing. We look forward to catching up and reviewing your submission!
+- I have tested the application in Chrome v.152.
+- If this would've been a production app I would likely have used a library for the data fetching in the frontend instead of the data fetching logic that I have implemeneted myself.
