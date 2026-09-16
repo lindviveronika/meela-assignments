@@ -1,7 +1,7 @@
 import type { JSX } from "react/jsx-runtime";
 import z from "zod";
 
-const ageRangeSchema = z.enum([
+export const ageRangeSchema = z.enum([
   "18-25",
   "26-35",
   "36-45",
@@ -10,8 +10,9 @@ const ageRangeSchema = z.enum([
   "65+",
 ]);
 
-const genderSchema = z.enum(["male", "female", "non-binary"]);
-const minorityCompetenceSchema = z.enum([
+export const genderSchema = z.enum(["male", "female", "non-binary"]);
+
+export const minorityCompetenceSchema = z.enum([
   "lgbtq+",
   "minority-stress",
   "neurodivergent",
@@ -23,7 +24,7 @@ const minorityCompetenceSchema = z.enum([
 export const onboardingAnswerSchema = z.object({
   "patient-age": ageRangeSchema.optional(),
   "patient-gender": genderSchema.optional(),
-  "therapist-minority-competence": minorityCompetenceSchema.optional(),
+  "therapist-minority-competence": z.array(minorityCompetenceSchema).optional(),
 });
 
 const onboardingStepIdSchema = onboardingAnswerSchema.keyof();
@@ -50,13 +51,11 @@ export const submissionSummaryResponseSchema = z.array(submissionSummarySchema);
 
 export const createSubmissionResponseSchema = z.object({ id: z.string() });
 
-export type AgeRange = z.infer<typeof ageRangeSchema>;
-export type Gender = z.infer<typeof genderSchema>;
 export type MinorityCompetence = z.infer<typeof minorityCompetenceSchema>;
-export type OnboardingStepId = z.infer<typeof onboardingStepIdSchema>;
-export type OnboardingAnswers = z.infer<typeof onboardingAnswerSchema>;
 export type SubmissionDetails = z.infer<typeof submissionDetailsSchema>;
 export type SubmissionSummary = z.infer<typeof submissionSummarySchema>;
+export type OnboardingAnswers = z.infer<typeof onboardingAnswerSchema>;
+type OnboardingStepId = z.infer<typeof onboardingStepIdSchema>;
 
 export type StepProps = {
   answers: OnboardingAnswers;

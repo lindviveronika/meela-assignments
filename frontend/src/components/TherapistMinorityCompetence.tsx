@@ -1,26 +1,54 @@
-import type { OnboardingStepId, StepProps } from "../types";
+import {
+  minorityCompetenceSchema,
+  type MinorityCompetence,
+  type StepProps,
+} from "../types";
+import { Checkbox } from "./Checkbox";
+import styles from "./TherapistMinorityCompetence.module.css";
 
-const KEY: OnboardingStepId = "therapist-minority-competence";
+const LABELS: Record<MinorityCompetence, string> = {
+  "lgbtq+": "LGBTQ+",
+  "minority-stress": "Minority Stress",
+  neurodivergent: "Neurodivergent",
+  "polyamorous-relationships": "Polyamorous Relationships",
+  rbts: "Race-Based Traumatic Stress (RBTS)",
+  "transgender-knowledge": "Transgender Knowledge",
+};
 
 export function TherapistMinorityCompetence({ answers, setAnswer }: StepProps) {
-  const value = answers[KEY];
+  const value = answers["therapist-minority-competence"];
+  const options = minorityCompetenceSchema.options;
+
+  const removeOption = (option: MinorityCompetence) => {
+    setAnswer(
+      "therapist-minority-competence",
+      value?.filter((v) => v !== option),
+    );
+  };
+
+  const addOption = (option: MinorityCompetence) => {
+    setAnswer("therapist-minority-competence", [...(value ?? []), option]);
+  };
+
+  const handleCheckedChange = (option: MinorityCompetence) => {
+    if (value?.includes(option)) {
+      removeOption(option);
+      return;
+    }
+
+    addOption(option);
+  };
+
   return (
-    <div>
-      <button
-        style={{ outline: value === "lgbtq+" ? "2px solid blue" : "none" }}
-        onClick={() => setAnswer(KEY, "lgbtq+")}
-      >
-        LGBTQ+
-      </button>
-      <button
-        style={{
-          outline: value === "minority-stress" ? "2px solid blue" : "none",
-        }}
-        onClick={() => setAnswer(KEY, "minority-stress")}
-      >
-        Minority Stress
-      </button>
-      {/* TODO: Add all steps */}
+    <div className={styles.container}>
+      {options.map((option) => (
+        <Checkbox
+          label={LABELS[option] ?? option}
+          key={option}
+          checked={value?.includes(option) ?? false}
+          onCheckedChange={() => handleCheckedChange(option)}
+        />
+      ))}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useFetchData } from "../hooks/useFetchData";
 import type { SubmissionDetails } from "../types";
 import { submissionDetailsSchema } from "../types";
 import { NotFound } from "./NotFound";
+import styles from "./Onboarding.module.css";
 import { OnboardingForm } from "./OnboardingForm";
 import { firstOnboardingStepId, getOnboardingStepById } from "./steps";
 
@@ -15,10 +16,12 @@ export function Onboarding() {
     submissionDetailsSchema,
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className={styles.message}>Loading...</div>;
   if (error)
     return (
-      <div>Something went wrong when loading the onboarding submission</div>
+      <div className={styles.message}>
+        Something went wrong when loading the onboarding submission
+      </div>
     );
   if (!data || !id) return <NotFound />;
 

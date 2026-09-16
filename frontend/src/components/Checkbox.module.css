@@ -1,0 +1,33 @@
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  font-family: monospace;
+  color: var(--color-burgundy);
+}
+
+.label::before {
+  border: 1px solid var(--color-burgundy);
+  content: "";
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1rem;
+  height: 1rem;
+}
+
+.label:has(.input:checked)::before {
+  background-color: var(--color-neon);
+  content: "✓";
+}
+
+.label:has(.input:focus-visible)::before {
+  outline: 1px solid var(--color-burgundy);
+  outline-offset: 1px;
+}
+
+.input {
+  appearance: none;
+  margin: 0;
+}

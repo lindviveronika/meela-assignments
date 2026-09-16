@@ -1,10 +1,10 @@
-import type { Gender, StepProps } from "../types";
+import { genderSchema, type StepProps } from "../types";
 import styles from "./PatientGender.module.css";
 import { RadioTile } from "./RadioTile";
 
 export function PatientGender({ setAnswer, answers }: StepProps) {
   const value = answers["patient-gender"];
-  const genderOptions: Gender[] = ["male", "female", "non-binary"];
+  const genderOptions = genderSchema.options;
 
   return (
     <div className={styles.container}>

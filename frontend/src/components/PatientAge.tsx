@@ -1,17 +1,10 @@
-import type { AgeRange, StepProps } from "../types";
+import { ageRangeSchema, type StepProps } from "../types";
 import styles from "./PatientAge.module.css";
 import { RadioTile } from "./RadioTile";
 
 export function PatientAge({ answers, setAnswer }: StepProps) {
   const value = answers["patient-age"];
-  const ageRanges: AgeRange[] = [
-    "18-25",
-    "26-35",
-    "36-45",
-    "46-55",
-    "56-65",
-    "65+",
-  ];
+  const ageRanges = ageRangeSchema.options;
 
   return (
     <div className={styles.container}>
