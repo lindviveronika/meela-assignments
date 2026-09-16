@@ -4,6 +4,7 @@ import {
   type StepProps,
 } from "../types";
 import { Checkbox } from "./Checkbox";
+import { QUESTION_ID } from "./OnboardingForm";
 import styles from "./TherapistMinorityCompetence.module.css";
 
 const LABELS: Record<MinorityCompetence, string> = {
@@ -40,7 +41,11 @@ export function TherapistMinorityCompetence({ answers, setAnswer }: StepProps) {
   };
 
   return (
-    <div className={styles.container}>
+    <div
+      role="group"
+      aria-labelledby={QUESTION_ID}
+      className={styles.container}
+    >
       {options.map((option) => (
         <Checkbox
           label={LABELS[option] ?? option}

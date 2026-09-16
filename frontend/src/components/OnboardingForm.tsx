@@ -18,6 +18,8 @@ interface OnboardingFormProps {
   onboardingStep: OnboardingStep;
 }
 
+export const QUESTION_ID = "step-question";
+
 export function OnboardingForm({
   submission,
   id,
@@ -101,7 +103,7 @@ export function OnboardingForm({
         </p>
       )}
       <div className={styles.question}>
-        <h2>{onboardingStep.question}</h2>
+        <h2 id={QUESTION_ID}>{onboardingStep.question}</h2>
         <p className={styles.stepIndicator}>
           Step {currentIndex + 1} of {onboardingSteps.length}
         </p>
