@@ -76,13 +76,21 @@ export function OnboardingForm({
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     // TODO: Implement form submission logic
     event.preventDefault();
-    console.log("submit form");
+    alert("submit form");
   };
 
   const OnboardingStep = onboardingStep.element;
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form
+      className={styles.form}
+      onSubmit={handleSubmit}
+      style={
+        {
+          "--progress": `${(currentIndex + 1) / onboardingSteps.length}`,
+        } as React.CSSProperties
+      }
+    >
       {savedStatus && (
         <p role="status" key={savedStatus.savedAt} className={styles.message}>
           {savedStatus.type === "success"
@@ -92,6 +100,9 @@ export function OnboardingForm({
       )}
       <div className={styles.question}>
         <h2>{onboardingStep.question}</h2>
+        <p className={styles.stepIndicator}>
+          Step {currentIndex + 1} of {onboardingSteps.length}
+        </p>
         <OnboardingStep answers={onboardingAnswers} setAnswer={handleUpdate} />
       </div>
       <div className={styles.formNavigation}>
