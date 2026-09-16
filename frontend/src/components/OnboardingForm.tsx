@@ -12,15 +12,17 @@ import { Button } from "./Button";
 import styles from "./OnboardingForm.module.css";
 import { onboardingSteps } from "./steps";
 
+interface OnboardingFormProps {
+  submission: SubmissionDetails;
+  id: string;
+  onboardingStep: OnboardingStep;
+}
+
 export function OnboardingForm({
   submission,
   id,
   onboardingStep,
-}: {
-  submission: SubmissionDetails;
-  id: string;
-  onboardingStep: OnboardingStep;
-}) {
+}: OnboardingFormProps) {
   const navigate = useNavigate();
   const [onboardingAnswers, setOnboardingAnswers] = useState<OnboardingAnswers>(
     submission.answers,
