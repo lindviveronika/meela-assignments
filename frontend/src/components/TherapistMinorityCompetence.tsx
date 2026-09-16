@@ -1,10 +1,10 @@
+import { QUESTION_ID } from "../constants";
 import {
   minorityCompetenceSchema,
   type MinorityCompetence,
   type StepProps,
 } from "../types";
 import { Checkbox } from "./Checkbox";
-import { QUESTION_ID } from "./OnboardingForm";
 import styles from "./TherapistMinorityCompetence.module.css";
 
 const LABELS: Record<MinorityCompetence, string> = {

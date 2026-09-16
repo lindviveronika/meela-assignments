@@ -1,5 +1,5 @@
+import { QUESTION_ID } from "../constants";
 import { ageRangeSchema, type StepProps } from "../types";
-import { QUESTION_ID } from "./OnboardingForm";
 import styles from "./PatientAge.module.css";
 import { RadioTile } from "./RadioTile";
 

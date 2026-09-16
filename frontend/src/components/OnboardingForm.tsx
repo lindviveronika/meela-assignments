@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { ONBOARDING_SUBMISSIONS_API } from "../constants";
+import { ONBOARDING_SUBMISSIONS_API, QUESTION_ID } from "../constants";
 import { useSendData } from "../hooks/useSendData";
 import {
   submissionDetailsSchema,
@@ -17,8 +17,6 @@ interface OnboardingFormProps {
   id: string;
   onboardingStep: OnboardingStep;
 }
-
-export const QUESTION_ID = "step-question";
 
 export function OnboardingForm({
   submission,

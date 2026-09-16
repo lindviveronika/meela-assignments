@@ -1,5 +1,5 @@
+import { QUESTION_ID } from "../constants";
 import { genderSchema, type StepProps } from "../types";
-import { QUESTION_ID } from "./OnboardingForm";
 import styles from "./PatientGender.module.css";
 import { RadioTile } from "./RadioTile";
 
