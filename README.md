@@ -35,7 +35,7 @@ Open http://localhost:5173/
 ## Future improvements
 
 - Actual submit logic including validation (both frontend and backend) of that required questions have been answered and have the correct format. This would include adding an answer schema to the backend which will be needed to actually use the data in the future. When doing this I would also add validation to the update endpoint to make sure the current step is a known step and that the answers conform to the form schema with all fields optional.
-- Submit page in form instead of just exchanging the next button on last page to make it more clear for the user that the form will be submitted.
+- A separate submit page in the form instead of just exchanging the next button on last page to make it more clear for the user that the form will be submitted.
 - Handle the case if someone navigates (by using an old bookmark or similar) to an already submitted form. I would've shown a message saying that it has already been submitted.
 - Proper styling of loading and error messages.
 - Automatic saving. I went for the save button now for simplicity. Having both would be nice.
