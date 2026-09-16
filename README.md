@@ -2,7 +2,7 @@
 
 ## Summary
 
-Here is my solution to the take-home task. I chose to use React on the frontend since that is what I have most experience with. That is also the part where I put most of my effort.
+Here is my solution to the take-home task. I chose to use React on the frontend since that is what I have most experience with. The frontend is also the part where I put most of my effort.
 
 The application has a home page where you can create new onboarding submissions and see a list of existing drafts. This is of course only for testing and reviewing purposes. ☺️
 
