@@ -1,25 +1,29 @@
 import { useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { ONBOARDING_SUBMISSIONS_API } from "../constants";
 import { useSendData } from "../hooks/useSendData";
 import {
   submissionDetailsSchema,
   type OnboardingAnswers,
+  type OnboardingStep,
   type SubmissionDetails,
 } from "../types";
 import { Button } from "./Button";
 import styles from "./OnboardingForm.module.css";
-import {
-  firstOnboardingStepId,
-  getOnboardingStepById,
-  onboardingSteps,
-} from "./steps";
+import { onboardingSteps } from "./steps";
 
-function OnboardingForm({ data }: { data: SubmissionDetails }) {
-  const { id, stepId } = useParams();
+export function OnboardingForm({
+  submission,
+  id,
+  onboardingStep,
+}: {
+  submission: SubmissionDetails;
+  id: string;
+  onboardingStep: OnboardingStep;
+}) {
   const navigate = useNavigate();
   const [onboardingAnswers, setOnboardingAnswers] = useState<OnboardingAnswers>(
-    data.answers,
+    submission.answers,
   );
 
   const { sendData } = useSendData(
@@ -27,15 +31,8 @@ function OnboardingForm({ data }: { data: SubmissionDetails }) {
     submissionDetailsSchema,
   );
 
-  const onboardingStep = getOnboardingStepById(stepId);
-  if (!onboardingStep) {
-    return (
-      <Navigate to={`/onboarding/${id}/${firstOnboardingStepId}`} replace />
-    );
-  }
-
   const currentIndex = onboardingSteps.findIndex(
-    (step) => step.stepId === stepId,
+    (step) => step.stepId === onboardingStep.stepId,
   );
   const isFirstQuestion = currentIndex === 0;
   const isLastQuestion = currentIndex === onboardingSteps.length - 1;
@@ -55,7 +52,10 @@ function OnboardingForm({ data }: { data: SubmissionDetails }) {
     // TODO: Handle errors and loading state and show an indication of that it has been saved
     sendData({
       method: "PATCH",
-      body: JSON.stringify({ currentStep: stepId, answers: onboardingAnswers }),
+      body: JSON.stringify({
+        currentStep: onboardingStep.stepId,
+        answers: onboardingAnswers,
+      }),
     });
   };
 
@@ -99,5 +99,3 @@ function OnboardingForm({ data }: { data: SubmissionDetails }) {
     </form>
   );
 }
-
-export default OnboardingForm;

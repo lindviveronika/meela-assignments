@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router";
-import Home from "./components/Home";
-import NotFound from "./components/NotFound";
-import Onboarding from "./components/Onboarding";
+import { Home } from "./components/Home";
+import { NotFound } from "./components/NotFound";
+import { Onboarding } from "./components/Onboarding";
 import { PageLayout } from "./components/PageLayout";
 
-function App() {
+export function App() {
   return (
     <Routes>
       <Route path="/" element={<PageLayout />}>
@@ -15,5 +15,3 @@ function App() {
     </Routes>
   );
 }
-
-export default App;

@@ -7,7 +7,7 @@ import styles from "./Home.module.css";
 import { SubmissionList } from "./SubmissionList";
 import { firstOnboardingStepId } from "./steps";
 
-function Home() {
+export function Home() {
   const navigate = useNavigate();
 
   const {
@@ -49,5 +49,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

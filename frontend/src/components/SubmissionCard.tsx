@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import type { OnboardingStepId, SubmissionSummary } from "../types";
-import { firstOnboardingStepId, onboardingSteps } from "./steps";
+import type { SubmissionSummary } from "../types";
+import { onboardingSteps } from "./steps";
 
 import styles from "./SubmissionCard.module.css";
 
@@ -10,11 +10,6 @@ const dateOptions: Intl.DateTimeFormatOptions = {
   hour: "numeric",
   minute: "numeric",
 };
-
-function getStepLink(submissionId: string, stepId: OnboardingStepId | null) {
-  const currentStep = stepId ?? firstOnboardingStepId;
-  return `/onboarding/${submissionId}/${currentStep}`;
-}
 
 function getStatusText(
   status: SubmissionSummary["status"],
@@ -46,10 +41,7 @@ export function SubmissionCard({
   const totalSteps = onboardingSteps.length;
 
   return (
-    <Link
-      className={styles.link}
-      to={getStepLink(submission.id, submission.currentStep)}
-    >
+    <Link className={styles.link} to={`/onboarding/${submission.id}`}>
       <span className={styles.status}>
         {getStatusText(submission.status, currentStepNumber)}
       </span>
