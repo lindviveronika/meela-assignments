@@ -18,6 +18,9 @@ export function SubmissionList() {
       <div>Something went wrong when loading the onboarding submissions</div>
     );
 
+  if (submissions?.length === 0)
+    return <div>No onboarding submissions found</div>;
+
   return (
     <ul className={styles.submissionContainer}>
       {submissions?.map((submission) => (
