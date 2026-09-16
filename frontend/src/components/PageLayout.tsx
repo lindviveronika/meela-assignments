@@ -23,11 +23,11 @@ function MeelaLogo() {
 export function PageLayout() {
   return (
     <main className={styles.main}>
-      <nav>
-        <Link to="/">
+      <header>
+        <Link to="/" aria-label="Home">
           <MeelaLogo />
         </Link>
-      </nav>
+      </header>
       <Outlet />
     </main>
   );
